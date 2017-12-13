@@ -14,6 +14,15 @@
         <li><a href="<%= root_path %>">Home</a></li>
         <li><a href="<%= home_tutorial_path %>">TUTORIAL</a></li>
       </ul>
+      <ul class="nav navbar-nav navbar-right">
+      <% if user_signed_in? %>
+          <li><a>Hello <strong><%= current_user.email %></strong></a></li>
+          <li><%= link_to destroy_user_session_path, :method => :delete do %>Log out <span class="glyphicon glyphicon-log-out"> <% end %></li>
+      <% else %>
+        <li><%= link_to "Sign up" ,new_user_registration_path %></li>
+        <li><%= link_to new_user_session_path do %>Log in <span class="glyphicon glyphicon-log-in"> <% end %></li>
+      <% end %>
+      </ul>
     </div>
   </div>
 </nav>

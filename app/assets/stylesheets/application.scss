@@ -16,3 +16,30 @@
 
  @import "bootstrap-sprockets";
  @import "bootstrap";
+
+ main.container-fluid{
+	margin-bottom: 50px;
+}
+
+@media (max-width: 768px){
+	.navbar .navbar-collapse {
+		text-align: center;
+
+		.nav.navbar-nav{
+			margin: 0;
+		}
+		
+		ul:not(.navbar-right) li, ul.navbar-right li:not(:last-child) {
+			border-bottom: 1px solid lightgrey;
+		}
+	}
+}
+
+.panel{
+	-webkit-box-shadow: 0px 10px 30px 5px rgba(0,0,0,0.55);
+	-moz-box-shadow: 0px 10px 30px 5px rgba(0,0,0,0.55);
+	box-shadow: 0px 10px 30px 5px rgba(0,0,0,0.55);
+	border-radius: 25px;
+	padding: 30px;
+	margin: 40px 0px 40px;
+}
