@@ -5,20 +5,15 @@
   <%= @team.name %>
 </p>
 
-<p>
-  <strong>Encrypted password:</strong>
-  <%= @team.encrypted_password %>
-</p>
-
-<p>
-  <strong>Salt:</strong>
-  <%= @team.salt %>
-</p>
-
-<p>
-  <strong>Leader:</strong>
-  <%= @team.leader_id %>
-</p>
-
+<strong>Team Members:</strong>
+<ul>
+  <li><strong><%= @team.leader.email %></strong></li>
+  <% @team.users.drop(1).each do |user| %>
+    <li><%= user.email %></li>
+  <% end %>
+</ul>
+<% if current_user.team == @team %>
+  <%= link_to 'Leave team', leave_team_path(@team), method: :post %><br>
+<% end %>
 <%= link_to 'Edit', edit_team_path(@team) %> |
 <%= link_to 'Back', teams_path %>

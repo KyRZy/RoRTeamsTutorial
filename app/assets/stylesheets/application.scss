@@ -91,3 +91,14 @@ span.code {
     font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
 	font-weight: bold;
 }
+
+#or{
+    text-align: center;
+    font-weight: bold;
+}
+
+@media screen and (min-width:992px){
+    #or{
+        margin-top: 150px;
+    }
+}
