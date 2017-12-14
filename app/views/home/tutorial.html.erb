@@ -1,8 +1,35 @@
 <% provide(:title, "TUTORIAL") %>
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-offset-1 col-lg-10 col-lg-offset-1">
-        <h2>Przygotowanie projektu</h2>
+        <div id="spis_tresci">
+            <h2>Spis treści</h2>
+            <ol>
+                <li><a href="#przygotowanie">Przygotowanie projektu</a>
+                    <ol>
+                        <li><a href="#github">GitHub</a></li>
+                        <li><a href="#heroku">Heroku</a></li>
+                    </ol>
+                </li>
+                <li><a href="#konfiguracja">Wstępna konfiguracja</a>
+                    <ol>
+                        <li><a href="#glowny">Główny kontroler</a></li>
+                        <li><a href="#gemy">Devise, Bootstrap i bcrypt</a></li>
+                    </ol>
+                </li>
+                <li><a href="#implementacja">Zaimplementowanie drużyn</a>
+                    <ol>
+                        <li><a href="#model">Baza danych i klasa</a></li>
+                        <li><a href="#tworzenie">Tworzenie drużyny</a></li>
+                        <li><a href="#dolaczanie">Dołączanie do drużyny</a></li>
+                        <li><a href="#opuszczanie">Opuszczanie do drużyny</a></li>
+                        <li><a href="#wyswietlanie">Wyświetlanie drużyny</a></li>
+                    </ol>
+                </li>
+            </ol>
+        </div>
+        
+        <h2 id="przygotowanie">1. Przygotowanie projektu</h2>
 
-        <h3>GitHub</h3>
+        <h3 id="github">1.1 GitHub</h3>
         <p>Przed stworzeniem aplikacji w Ruby on Rails, stworzymy nowe repozytorium na GitHub.</p>
         <div class="tutorial-image">
             <%= image_tag  "1_create_rep.png" %>
@@ -13,10 +40,10 @@
             <br> git clone https://github.com/KyRZy/RoRTeamsTutorial
         </div>
 
-        <h3>Heroku</h3>
+        <h3 id="heroku">1.2 Heroku</h3>
         <p>
             Heroku jest darmowym hostingiem, który pozwala nam na wczytanie naszej aplikacji z GitHuba.<br>
-            Wystarczy wejść na <a href="https://heroku.com">stronę Heroku</a>, zrobić nową aplikację i w zakładce Deploy 
+            Wystarczy wejść na <a target="_blank" href="https://heroku.com">stronę Heroku</a>, zrobić nową aplikację i w zakładce Deploy 
             zalogować się na swoje konto GitHub i wybrać repozytorium.
         </p>
         <div>
@@ -81,8 +108,8 @@
             <%= image_tag  "5_rails_new.png" %>
         </div>
 
-        <h2>Wstępna konfiguracja</h2>
-        <h3>Główny kontroler</h3>
+        <h2 id="konfiguracja">2. Wstępna konfiguracja</h2>
+        <h3 id="glowny">2.1 Główny kontroler</h3>
         <p>
             Konieczne jest utworzenie kontrolera, gdzie jedną ze stron będzie strona główna, a drugą podstrona z samouczkiem.
             Kontroler będzie miał nazwę <span class="code">home</span>
@@ -104,7 +131,7 @@
             <span class="purple">end</span>
         </div>
 
-        <h3>Devise, Bootstrap i bcrypt</h3>
+        <h3 id="gemy">2.2 Devise, Bootstrap i bcrypt</h3>
         <p>
             W pliku <span class"code">Gemfile</span> dodamy 3 gemy, które wykorzystamy w tym samouczku:
         </p>
@@ -145,7 +172,7 @@
         </ul>
         <p>
             Teraz możemy zrobić menu pozwalające na przechodzenie między podstronami oraz na logowanie się z użyciem Devise.<br>
-            Menu użyte na tej stronie: <a href="https://github.com/KyRZy/RoRTeamsTutorial/blob/master/app/views/layouts/_header.html.erb">https://github.com/KyRZy/RoRTeamsTutorial/blob/master/app/views/layouts/_header.html.erb</a><br>
+            Menu użyte na tej stronie: <a target="_blank" href="https://github.com/KyRZy/RoRTeamsTutorial/blob/master/app/views/layouts/_header.html.erb">https://github.com/KyRZy/RoRTeamsTutorial/blob/master/app/views/layouts/_header.html.erb</a><br>
             Niektóre ścieżki jeszcze nie istnieją w tym etapie tutoriala, więc należy je usunąć lub zakomentować.
         </p>
         <p>
@@ -179,20 +206,20 @@
             Plik zxc powinien wyglądać tak:
         </p>
         <div class="console">
-        <span class="blue">module</span> ApplicationHelper<br>
-          &emsp;<span class="blue">def</span> flash_class(level)<br>
-          &emsp;&emsp;<span class="blue">case</span> level<br>
-          &emsp;&emsp;&emsp;<span class="blue">when</span> <span class="orange">'notice'</span> <span class="blue">then</span> <span class="orange">"alert alert-info"</span><br>
-          &emsp;&emsp;&emsp;<span class="blue">when</span> <span class="orange">'success'</span> <span class="blue">then</span> <span class="orange">"alert alert-success"</span><br>
-          &emsp;&emsp;&emsp;<span class="blue">when</span> <span class="orange">'error'</span> <span class="blue">then</span> <span class="orange">"alert alert-danger"</span><br>
-          &emsp;&emsp;&emsp;<span class="blue">when</span> <span class="orange">'alert'</span> <span class="blue">then</span> <span class="orange">"alert alert-warning"</span><br>
-          &emsp;&emsp;<span class="blue">end</span><br>
-          &emsp;<span class="blue">end</span><br>
-          <span class="blue">end</span>
-        </div>  <span class="orange">
+        <span class="purple">module</span> ApplicationHelper<br>
+          &emsp;<span class="purple">def</span> flash_class(level)<br>
+          &emsp;&emsp;<span class="purple">case</span> level<br>
+          &emsp;&emsp;&emsp;<span class="purple">when</span> <span class="orange">'notice'</span> <span class="purple">then</span> <span class="orange">"alert alert-info"</span><br>
+          &emsp;&emsp;&emsp;<span class="purple">when</span> <span class="orange">'success'</span> <span class="purple">then</span> <span class="orange">"alert alert-success"</span><br>
+          &emsp;&emsp;&emsp;<span class="purple">when</span> <span class="orange">'error'</span> <span class="purple">then</span> <span class="orange">"alert alert-danger"</span><br>
+          &emsp;&emsp;&emsp;<span class="purple">when</span> <span class="orange">'alert'</span> <span class="purple">then</span> <span class="orange">"alert alert-warning"</span><br>
+          &emsp;&emsp;<span class="purple">end</span><br>
+          &emsp;<span class="purple">end</span><br>
+          <span class="purple">end</span>
+        </div>
 
-        <h2>Zaimplementowanie drużyn</h2>
-        <h3>Tabela i model</h3>
+        <h2 id="implementacja">3. Zaimplementowanie drużyn</h2>
+        <h3 id="model">3.1 Baza danych i klasa</h3>
         <p>
             Aby jednym poleceniem wygenerować wszystkie potrzebne widoki, model oraz kontroler z podstawowymi akcjami, wykorzystamy polecenie:
         </p>
@@ -233,7 +260,18 @@
             <strong>UWAGA!</strong> Po zmianach w folderze initializers konieczne jest zrestartowanie serwera.
         </p>
 
-        <h3>Tworzenie drużyn</h3>
+        <h3 id="tworzenie">3.2 Tworzenie drużyny</h3>
+        <p>
+            Jako że tabela drużyn została dodana do bazy danych oraz ustawione zostały relacje między tabelami drużyn i użytkowników,
+            możemy dodać/odkomentować w menu fragment:
+        </p>
+        <div class="console">
+        &lt;% if current_user.team.nil? %&gt;<br>
+        &emsp;&lt;li&gt;&lt;%= link_to "Create/Join Team", new_team_path %&gt; &lt;/li&gt;<br>
+        &lt;% else %&gt;<br>
+        &emsp;&lt;li&gt;&lt;%= link_to "My team", current_user.team %&gt; &lt;/li&gt;<br>
+        &lt;% end %&gt;
+        </div>
         <p>
             Dzięki funkcji scaffold mamy gotowy formularz oraz kontroler z akcją create, który obsługuje ten formularz.<br>
             Aby skorzystać z funkcji dostępnych w gem'ie bcrypt, na górze kontrolera <span class="code">teams_controller.rb</span> należy dopisać:
@@ -242,10 +280,187 @@
             <span class="blue">require</span> <span class="orange">'bcrypt'</span>
         </div>
         <p>
+            Gotowy formularz można znaleźć tutaj: <a target="_blank" target="_blank" href="https://github.com/KyRZy/RoRTeamsTutorial/blob/master/app/views/teams/new.html.erb">https://github.com/KyRZy/RoRTeamsTutorial/blob/master/app/views/teams/new.html.erb</a><br>
+            Na ten moment należy skopiować jedynie partial _create oraz fragment new.html.erb odpowiedzialny za wyrenderowanie tego partiala. 
+            Jeśli wstawimy oba formularze dostaniemy błąd, że ścieżka podana w drugim formularzu nie istnieje.<br>
             Teraz możemy przejść do obsługi akcji Create:
         </p>
         <div class="console">
-            <span class="blue">require</span> <span class="orange">'bcrypt'</span>
+            def create<br>
+            &emsp;# sprawdzenie czy hasła w obu polach są identyczne<br>
+            &emsp;if params[:password] == params[:password_confirmation]<br>
+            &emsp;&emsp;@team = Team.new(team_params)<br>
+            &emsp;&emsp;# ustawienie obecnie zalogowanego użytkownika jako lidera drużyny<br>
+            &emsp;&emsp;@team.leader_id = current_user.id<br>
+            &emsp;&emsp;# wygenerowanie soli, unikalnej dla każdej drużyny<br>
+            &emsp;&emsp;@team.salt = BCrypt::Engine.generate_salt<br>
+            &emsp;&emsp;# zaszyfrowanie hasła wykorzystując sól<br>
+            &emsp;&emsp;@team.encrypted_password= BCrypt::Engine.hash_secret(params[:password], @team.salt)<br>
+            &emsp;&emsp;Team.transaction do<br>
+            &emsp;&emsp;&emsp;respond_to do |format|<br>
+            &emsp;&emsp;&emsp;# zapisanie drużyny w bazie danych<br>
+            &emsp;&emsp;&emsp;if @team.save<br>
+            &emsp;&emsp;&emsp;&emsp;# ustawienie utworzonej drużyny jako drużynę zalogowanego użytkownika<br>
+            &emsp;&emsp;&emsp;&emsp;current_user.team_id = @team.id<br>
+            &emsp;&emsp;&emsp;&emsp;# zapisanie zmian w użytkowniku<br>
+            &emsp;&emsp;&emsp;&emsp;if current_user.save<br>
+            &emsp;&emsp;&emsp;&emsp;&emsp;flash[:success] = 'Team was successfully created.'<br>
+            &emsp;&emsp;&emsp;&emsp;&emsp;format.html { redirect_to root_url}<br>
+            &emsp;&emsp;&emsp;&emsp;&emsp;format.json { render :show, status: :created, location: @team }<br>
+            &emsp;&emsp;&emsp;&emsp;else<br>
+            &emsp;&emsp;&emsp;&emsp;&emsp;format.html { render :new }<br>
+            &emsp;&emsp;&emsp;&emsp;&emsp;format.json { render json: current_user.errors, status: :unprocessable_entity }<br>
+            &emsp;&emsp;&emsp;&emsp;end<br>
+            &emsp;&emsp;&emsp;&emsp;# jeśli zapisanie drużyny nie powiodło się (wykorzystujemy fakt, że podczas walidacji sprawdzamy tylko unikalność nazwy)<br>
+            &emsp;&emsp;&emsp;&emsp;else<br>
+            &emsp;&emsp;&emsp;&emsp;&emsp;flash[:error] = 'This team name is already taken.'<br>
+            &emsp;&emsp;&emsp;&emsp;&emsp;format.html { render :new }<br>
+            &emsp;&emsp;&emsp;&emsp;&emsp;format.json { render json: @team.errors, status: :unprocessable_entity }<br>
+            &emsp;&emsp;&emsp;&emsp;end<br>
+            &emsp;&emsp;&emsp;end<br>
+            &emsp;&emsp;end<br>
+            &emsp;&emsp;# sprawdzenie czy hasła w obu polach NIE są identyczne<br>
+            &emsp;else<br>
+            &emsp;&emsp;flash[:error] = 'Password and password confirmation don\'t match.'<br>
+            &emsp;&emsp;redirect_to new_team_path<br>
+            &emsp;end<br>
+          end<br>
         </div>
+        <h3 id="dolaczanie">3.3 Dołączanie do drużyny</h3>
+        <p>
+            Na początku musimy uzupełnić plik <span class="code">routes.rb</span> o akcję, którą zaimplementujemy:
+        </p>
+        <div class="console">
+            post 'join_existing_team' => 'teams#join_existing_team'
+        </div>
+        <p>
+            Następnie zaimplementujemy nową akcję <span class="code">join_existing_team</span>, która pozwoli na dołączenie do istniejącej drużyny.<br>
+            Gotowy formularz można znaleźć tutaj: <a target="_blank" href="https://github.com/KyRZy/RoRTeamsTutorial/blob/master/app/views/teams/new.html.erb">https://github.com/KyRZy/RoRTeamsTutorial/blob/master/app/views/teams/new.html.erb</a><br>
+            W <span class="code">teams.scss</span> można też dopisać:
+        </p>
+        <div class="console">
+            #or{<br>
+            &emsp;text-align: center;<br>
+            &emsp;font-weight: bold;<br>
+            }<br>
+            <br>
+            @media screen and (min-width: 992px){<br>
+            &emsp;#or{<br>
+            &emsp;&emsp;margin-top: 150px;<br>
+            &emsp;}<br>
+            }
+        </div>
+        <p>
+            Natomiast gotowa akcja w konstrolerze wygląda następująco:
+        </p>
+        <div class="console">
+            def join_existing_team<br>
+            # odczytanie z formularza nazwy i hasła drużyny<br>
+            name = params[:name]<br>
+            password = params[:password]<br>
+            # wykorzystując funkcję LOWER z PostgreSQL zapewniamy, że szukanie czy drużyna istnieje NIE jest czułe na wielkość liter<br>
+            if team = Team.where("LOWER(name) = ?",name.downcase).first<br>
+              # jeśli drużyna istnieje i wpisane hasło jest poprawne<br>
+              if team.encrypted_password == BCrypt::Engine.hash_secret(password, team.salt)<br>
+                # ustaw obecnego użytkownika jako członka drużyny<br>
+                current_user.team_id = team.id<br>
+                respond_to do |format|<br>
+                  # zapisz zmiany w użytkowniku<br>
+                  if current_user.save<br>
+                    flash[:success] = 'You successfully joined the team.'<br>
+                    format.html { redirect_to team}<br>
+                    format.json { render :show, status: :created, location: team }<br>
+                  else<br>
+                    format.html { render :new }<br>
+                    format.json { render json: current_user.errors, status: :unprocessable_entity }<br>
+                  end<br>
+                end<br>
+              else<br>
+                flash[:error] = 'Wrong password.'<br>
+                redirect_to new_team_path<br>
+              end<br>
+            else<br>
+              flash[:error] = 'Team does not exist.'<br>
+              redirect_to new_team_path<br>
+            end<br>
+          end<br>
+        </div>
+
+        <h3 id="opuszczanie">3.4 Opuszczanie drużyny</h3>
+        <p>
+            Na początku musimy uzupełnić plik <span class="code">routes.rb</span> o akcję, którą zaimplementujemy:
+        </p>
+        <div class="console">
+            post 'team/:id/leave_team_path' => 'teams#leave_team', as: 'leave_team'
+        </div>
+        <p>
+            Tym razem akcja będzie przyjmowała jako parametr identyfikator drużyny.
+            Aby akcja otrzymała ten parametr wystarczy ją dopisać do <span class="code">before_action :set_team</span>:
+        </p>
+        <div class="console">
+                before_action :set_team, only: [:show, :edit, :update, :destroy, <strong>:leave_team</strong>]
+        </div>
+        <p>
+            Natomiast gotowa akcja w konstrolerze wygląda następująco:
+        </p>
+        <div class="console">
+                def leave_team<br>
+                # sprawdzenie czy należymy do drużyny, którą chcemy opuścić<br>
+                if current_user.team = @team<br>
+                  # jeśli tak, ustaw drużynę użytkownika jako null<br>
+                  current_user.team = nil<br>
+                  respond_to do |format|<br>
+                    # zapisanie zmian w użytkowniku<br>
+                    if current_user.save<br>
+                      flash[:success] = 'You successfully left the team.'<br>
+                      format.html { redirect_to root_url}<br>
+                      format.json { render :show, status: :created, location: @team }<br>
+                    else<br>
+                      format.html { render :new }<br>
+                      format.json { render json: @team.errors, status: :unprocessable_entity }<br>
+                    end<br>
+                  end<br>
+                else<br>
+                  flash[:error] = 'You cannot leave the team you\'re not a member of.'<br>
+                  redirect_to @team<br>
+                end<br>
+              end
+            </div>
+        <h3 id="wyswietlanie">3.5 Wyświetlanie drużyny</h3>
+        <p>
+            Wstaw poniższy kod do <span class="code">views/teams/show.html.rb</span>
+        </p>
+        <div class="console">
+                &lt;p&gt;<br>
+                        &lt;strong&gt;Name:&lt;/strong&gt;<br>
+                        &lt;%= @team.name %&gt;<br>
+                      &lt;/p&gt;<br>
+                      <br>
+                      &lt;strong&gt;Team Members:&lt;/strong&gt;<br>
+                      &lt;ul&gt;<br>
+                        &lt;li&gt;&lt;strong&gt;&lt;%= @team.leader.email %&gt;&lt;/strong&gt;&lt;/li&gt;<br>
+                        &lt;% @team.users.drop(1).each do |user| %&gt;<br>
+                          &lt;li&gt;&lt;%= user.email %&gt;&lt;/li&gt;<br>
+                        &lt;% end %&gt;<br>
+                      &lt;/ul&gt;<br>
+                      &lt;% if current_user.team == @team %&gt;<br>
+                        &lt;%= link_to 'Leave team', leave_team_path(@team), method: :post %&gt;&lt;br&gt;<br>
+                      &lt;% end %&gt;<br>
+                      &lt;%= link_to 'Edit', edit_team_path(@team) %&gt; |<br>
+                      &lt;%= link_to 'Back', teams_path %&gt;<br>
+        </div>
+        <p>
+            Dzięki temu, że akcja <span class="code">show</span> jest w liście akcji, które mają być poprzedzone przez akcję <span class="code">set_team</span> 
+            możemy odwoływać się do obiektu <span class="code">@team</span> oraz do wszystkich pól dostępnych w tej klasie czyli name, email, itp.
+            Na początku wyświetlamy nazwę drużyny. Następnie chcemy wyświetlić lidera. Możemy to uzyskać poprzez użycie <span class="code">@team.leader</span> 
+            albo odczytując użytkownika, który pierwszy dołączył do drużyny <span class="code">@team.users.first</span>. Drugie rozwiązanie może się nie sprawdzić, 
+            gdybyśmy w przyszłości dodali możliwość zmiany lidera drużyny.<br>
+            Dalej wyświetlamy resztę drużyny. Jeśli dalibyśmy możliwość zmiany lidera, musielibyśmy za każdym razem sprawdzać 
+            czy sprawdzany użytkownik nie jest liderem i go pominąć. Wykorzystamy jednak fakt, że na ten moment pierwszy użytkownik zawsze jest liderem.
+            Poprzez <span class="code">@team.users.drop(1)</span> otrzymujemy listę użytkowników drużyny z wyłączeniem lidera. Następnie dla każdego użytkownika z otrzymanej 
+            listy odczytujemy adres email i wyświetlamy.<br>
+            Na sam koniec sprawdzamy, czy obecnie zalogowany użytkownik należy do przeglądanej drużyny. Jeśli tak, dajemy możliwość opuszczenia drużyny. 
+            Jako cel odnośnika musimy podać nazwę ścieżki do akcji z kontrolera Teams razem z parametrem, ponieważ tak określiliśmy ścieżkę do tej akcji w <span class="code">routes.rb</span>. 
+        </p>
 
     </div>

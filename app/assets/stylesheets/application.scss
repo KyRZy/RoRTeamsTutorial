@@ -102,3 +102,11 @@ span.code {
         margin-top: 150px;
     }
 }
+
+#spis_tresci{
+	font-size: 16px;
+
+	ol { counter-reset: item }
+	li { display: block; font-size: 16px; }
+	li:before { content: counters(item, ".") " "; counter-increment: item }
+}

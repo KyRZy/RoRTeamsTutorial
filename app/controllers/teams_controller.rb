@@ -66,13 +66,17 @@ class TeamsController < ApplicationController
   end
 
   def join_existing_team
+    # odczytanie z formularza nazwy i hasła drużyny
     name = params[:name]
     password = params[:password]
-    # changed "if team = Team.where(name: name).first" to make search case-insensivite
+    # wykorzystując funkcję LOWER z PostgreSQL zapewniamy, że szukanie czy drużyna istnieje NIE jest czułe na wielkość liter
     if team = Team.where("LOWER(name) = ?",name.downcase).first
+      # jeśli drużyna istnieje i wpisane hasło jest poprawne
       if team.encrypted_password == BCrypt::Engine.hash_secret(password, team.salt)
+        # ustaw obecnego użytkownika jako członka drużyny
         current_user.team_id = team.id
         respond_to do |format|
+          # zapisz zmiany w użytkowniku
           if current_user.save
             flash[:success] = 'You successfully joined the team.'
             format.html { redirect_to team}
@@ -93,9 +97,12 @@ class TeamsController < ApplicationController
   end
 
   def leave_team
+    # sprawdzenie czy należymy do drużyny, którą chcemy opuścić
     if current_user.team = @team
+      # jeśli tak, ustaw drużynę użytkownika jako null
       current_user.team = nil
       respond_to do |format|
+        # zapisanie zmian w użytkowniku
         if current_user.save
           flash[:success] = 'You successfully left the team.'
           format.html { redirect_to root_url}
