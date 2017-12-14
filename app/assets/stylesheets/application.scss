@@ -70,6 +70,9 @@ ul li{
     padding: 10px;
 	border-radius: 5px;
 	
+	span.comment{
+		color: #018b3b;
+	}
 	span.green{
 		color: #18ffac;
 	}
@@ -108,5 +111,5 @@ span.code {
 
 	ol { counter-reset: item }
 	li { display: block; font-size: 16px; }
-	li:before { content: counters(item, ".") " "; counter-increment: item }
+	li:before { content: counters(item, ".") " "; counter-increment: item; }
 }

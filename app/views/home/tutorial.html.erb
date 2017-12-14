@@ -203,7 +203,7 @@
 
         <p>
             Funkcja <span class="code">flash_class</span> pozwoli nam na wyświetlenie wszelkich komunikatów wykorzystujących flasha za pomocą alertów z Bootstrapa.<br>
-            Plik zxc powinien wyglądać tak:
+            Plik <span class="code">helpers/application_helper.rb</span> powinien wyglądać tak:
         </p>
         <div class="console">
         <span class="purple">module</span> ApplicationHelper<br>
@@ -254,7 +254,8 @@
         </div>
         <p>
             Od Rails 5 domyślnie jest ustawione zabezpieczenie, gdzie pole klasy, które jest referencją do innej klasy, nie może przyjąć wartości null.
-            W naszym wypadku chcemy przyjąć wartość null, gdy użytkownik nie należy do żadnej drużyny. Aby to naprawić wystarczy wejść do 
+            W naszym wypadku chcemy przyjąć wartość null, gdy użytkownik nie należy do żadnej drużyny.<br>
+            Aby to naprawić wystarczy wejść do 
             <span class="code">config/initializers/new_framework_defaults.rb</span> i ustawić wartość 
             <span class="code">Rails.application.config.active_record.belongs_to_required_by_default</span> na false.<br>
             <strong>UWAGA!</strong> Po zmianach w folderze initializers konieczne jest zrestartowanie serwera.
@@ -266,10 +267,10 @@
             możemy dodać/odkomentować w menu fragment:
         </p>
         <div class="console">
-        &lt;% if current_user.team.nil? %&gt;<br>
-        &emsp;&lt;li&gt;&lt;%= link_to "Create/Join Team", new_team_path %&gt; &lt;/li&gt;<br>
+        &lt;% <span class="purple">if</span> current_user.team.nil? %&gt;<br>
+        &emsp;&lt;li&gt;&lt;%= link_to <span class="orange">"Create/Join Team"</span>, new_team_path %&gt; &lt;/li&gt;<br>
         &lt;% else %&gt;<br>
-        &emsp;&lt;li&gt;&lt;%= link_to "My team", current_user.team %&gt; &lt;/li&gt;<br>
+        &emsp;&lt;li&gt;&lt;%= link_to <span class="orange">"My team"</span>, current_user.team %&gt; &lt;/li&gt;<br>
         &lt;% end %&gt;
         </div>
         <p>
@@ -286,45 +287,45 @@
             Teraz możemy przejść do obsługi akcji Create:
         </p>
         <div class="console">
-            def create<br>
-            &emsp;# sprawdzenie czy hasła w obu polach są identyczne<br>
-            &emsp;if params[:password] == params[:password_confirmation]<br>
+            <span class="purple">def</span> create<br>
+            &emsp;<span class="comment"># sprawdzenie czy hasła w obu polach są identyczne</span><br>
+            &emsp;<span class="purple">if</span> params[<span class="blue">:password</span>] == params[<span class="blue">:password_confirmation</span>]<br>
             &emsp;&emsp;@team = Team.new(team_params)<br>
-            &emsp;&emsp;# ustawienie obecnie zalogowanego użytkownika jako lidera drużyny<br>
+            &emsp;&emsp;<span class="comment"># ustawienie obecnie zalogowanego użytkownika jako lidera drużyny</span><br>
             &emsp;&emsp;@team.leader_id = current_user.id<br>
-            &emsp;&emsp;# wygenerowanie soli, unikalnej dla każdej drużyny<br>
+            &emsp;&emsp;<span class="comment"># wygenerowanie soli, unikalnej dla każdej drużyny</span><br>
             &emsp;&emsp;@team.salt = BCrypt::Engine.generate_salt<br>
-            &emsp;&emsp;# zaszyfrowanie hasła wykorzystując sól<br>
-            &emsp;&emsp;@team.encrypted_password= BCrypt::Engine.hash_secret(params[:password], @team.salt)<br>
-            &emsp;&emsp;Team.transaction do<br>
-            &emsp;&emsp;&emsp;respond_to do |format|<br>
-            &emsp;&emsp;&emsp;# zapisanie drużyny w bazie danych<br>
-            &emsp;&emsp;&emsp;if @team.save<br>
-            &emsp;&emsp;&emsp;&emsp;# ustawienie utworzonej drużyny jako drużynę zalogowanego użytkownika<br>
+            &emsp;&emsp;<span class="comment"># zaszyfrowanie hasła wykorzystując sól</span><br>
+            &emsp;&emsp;@team.encrypted_password= BCrypt::Engine.hash_secret(params[<span class="blue">:password</span>], @team.salt)<br>
+            &emsp;&emsp;Team.transaction <span class="purple">do</span><br>
+            &emsp;&emsp;&emsp;respond_to <span class="purple">do</span> |format|<br>
+            &emsp;&emsp;&emsp;<span class="comment"># zapisanie drużyny w bazie danych</span><br>
+            &emsp;&emsp;&emsp;<span class="purple">if</span> @team.save<br>
+            &emsp;&emsp;&emsp;&emsp;<span class="comment"># ustawienie utworzonej drużyny jako drużynę zalogowanego użytkownika</span><br>
             &emsp;&emsp;&emsp;&emsp;current_user.team_id = @team.id<br>
-            &emsp;&emsp;&emsp;&emsp;# zapisanie zmian w użytkowniku<br>
-            &emsp;&emsp;&emsp;&emsp;if current_user.save<br>
-            &emsp;&emsp;&emsp;&emsp;&emsp;flash[:success] = 'Team was successfully created.'<br>
+            &emsp;&emsp;&emsp;&emsp;<span class="comment"># zapisanie zmian w użytkowniku</span><br>
+            &emsp;&emsp;&emsp;&emsp;<span class="purple">if</span> current_user.save<br>
+            &emsp;&emsp;&emsp;&emsp;&emsp;flash[<span class="blue">:success</span>] = <span class="orange">'Team was successfully created.'</span><br>
             &emsp;&emsp;&emsp;&emsp;&emsp;format.html { redirect_to root_url}<br>
             &emsp;&emsp;&emsp;&emsp;&emsp;format.json { render :show, status: :created, location: @team }<br>
-            &emsp;&emsp;&emsp;&emsp;else<br>
+            &emsp;&emsp;&emsp;&emsp;<span class="purple">else</span><br>
             &emsp;&emsp;&emsp;&emsp;&emsp;format.html { render :new }<br>
             &emsp;&emsp;&emsp;&emsp;&emsp;format.json { render json: current_user.errors, status: :unprocessable_entity }<br>
-            &emsp;&emsp;&emsp;&emsp;end<br>
-            &emsp;&emsp;&emsp;&emsp;# jeśli zapisanie drużyny nie powiodło się (wykorzystujemy fakt, że podczas walidacji sprawdzamy tylko unikalność nazwy)<br>
-            &emsp;&emsp;&emsp;&emsp;else<br>
-            &emsp;&emsp;&emsp;&emsp;&emsp;flash[:error] = 'This team name is already taken.'<br>
+            &emsp;&emsp;&emsp;&emsp;<span class="purple">end</span><br>
+            &emsp;&emsp;&emsp;&emsp;<span class="comment"># jeśli zapisanie drużyny nie powiodło się (wykorzystujemy fakt, że podczas walidacji sprawdzamy tylko unikalność nazwy)</span><br>
+            &emsp;&emsp;&emsp;&emsp;<span class="purple">else</span><br>
+            &emsp;&emsp;&emsp;&emsp;&emsp;flash[<span class="blue">:error</span>] = <span class="orange">'This team name is already taken.'</span><br>
             &emsp;&emsp;&emsp;&emsp;&emsp;format.html { render :new }<br>
             &emsp;&emsp;&emsp;&emsp;&emsp;format.json { render json: @team.errors, status: :unprocessable_entity }<br>
-            &emsp;&emsp;&emsp;&emsp;end<br>
-            &emsp;&emsp;&emsp;end<br>
-            &emsp;&emsp;end<br>
-            &emsp;&emsp;# sprawdzenie czy hasła w obu polach NIE są identyczne<br>
-            &emsp;else<br>
-            &emsp;&emsp;flash[:error] = 'Password and password confirmation don\'t match.'<br>
+            &emsp;&emsp;&emsp;&emsp;<span class="purple">end</span><br>
+            &emsp;&emsp;&emsp;<span class="purple">end</span><br>
+            &emsp;&emsp;<span class="purple">end</span><br>
+            &emsp;&emsp;<span class="comment"># sprawdzenie czy hasła w obu polach NIE są identyczne</span><br>
+            &emsp;<span class="purple">else</span><br>
+            &emsp;&emsp;flash[<span class="blue">:error</span>] = <span class="orange">'Password and password confirmation don\'t match.'</span><br>
             &emsp;&emsp;redirect_to new_team_path<br>
-            &emsp;end<br>
-          end<br>
+            &emsp;<span class="purple">end</span><br>
+            <span class="purple">end</span><br>
         </div>
         <h3 id="dolaczanie">3.3 Dołączanie do drużyny</h3>
         <p>
@@ -354,36 +355,36 @@
             Natomiast gotowa akcja w konstrolerze wygląda następująco:
         </p>
         <div class="console">
-            def join_existing_team<br>
-            # odczytanie z formularza nazwy i hasła drużyny<br>
-            name = params[:name]<br>
-            password = params[:password]<br>
-            # wykorzystując funkcję LOWER z PostgreSQL zapewniamy, że szukanie czy drużyna istnieje NIE jest czułe na wielkość liter<br>
-            if team = Team.where("LOWER(name) = ?",name.downcase).first<br>
-              # jeśli drużyna istnieje i wpisane hasło jest poprawne<br>
-              if team.encrypted_password == BCrypt::Engine.hash_secret(password, team.salt)<br>
-                # ustaw obecnego użytkownika jako członka drużyny<br>
-                current_user.team_id = team.id<br>
-                respond_to do |format|<br>
-                  # zapisz zmiany w użytkowniku<br>
-                  if current_user.save<br>
-                    flash[:success] = 'You successfully joined the team.'<br>
-                    format.html { redirect_to team}<br>
-                    format.json { render :show, status: :created, location: team }<br>
-                  else<br>
-                    format.html { render :new }<br>
-                    format.json { render json: current_user.errors, status: :unprocessable_entity }<br>
-                  end<br>
-                end<br>
-              else<br>
-                flash[:error] = 'Wrong password.'<br>
-                redirect_to new_team_path<br>
-              end<br>
-            else<br>
-              flash[:error] = 'Team does not exist.'<br>
-              redirect_to new_team_path<br>
-            end<br>
-          end<br>
+            <span class="purple">def</span> join_existing_team<br>
+            &emsp;<span class="comment"># odczytanie z formularza nazwy i hasła drużyny</span><br>
+            &emsp;name = params[<span class="blue">:name</span>]<br>
+            &emsp;password = params[<span class="blue">:password</span>]<br>
+            &emsp;<span class="comment"># wykorzystując funkcję LOWER z PostgreSQL zapewniamy, że szukanie czy drużyna istnieje NIE jest czułe na wielkość liter</span><br>
+            &emsp;<span class="purple">if</span> team = Team.where("LOWER(name) = ?",name.downcase).first<br>
+            &emsp;&emsp;<span class="comment"># jeśli drużyna istnieje i wpisane hasło jest poprawne</span><br>
+            &emsp;&emsp;<span class="purple">if</span> team.encrypted_password == BCrypt::Engine.hash_secret(password, team.salt)<br>
+            &emsp;&emsp;&emsp;<span class="comment"># ustaw obecnego użytkownika jako członka drużyny</span><br>
+            &emsp;&emsp;&emsp;current_user.team_id = team.id<br>
+            &emsp;&emsp;&emsp;respond_to do |format|<br>
+            &emsp;&emsp;&emsp;&emsp;<span class="comment"># zapisz zmiany w użytkowniku</span><br>
+            &emsp;&emsp;&emsp;&emsp;<span class="purple">if</span> current_user.save<br>
+            &emsp;&emsp;&emsp;&emsp;&emsp;flash[<span class="blue">:success</span>] = <span class="orange">'You successfully joined the team.'</span><br>
+            &emsp;&emsp;&emsp;&emsp;&emsp;format.html { redirect_to team}<br>
+            &emsp;&emsp;&emsp;&emsp;&emsp;format.json { render :show, status: :created, location: team }<br>
+            &emsp;&emsp;&emsp;&emsp;<span class="purple">else</span><br>
+            &emsp;&emsp;&emsp;&emsp;&emsp;format.html { render :new }<br>
+            &emsp;&emsp;&emsp;&emsp;&emsp;format.json { render json: current_user.errors, status: :unprocessable_entity }<br>
+            &emsp;&emsp;&emsp;&emsp;<span class="purple">end</span><br>
+            &emsp;&emsp;&emsp;<span class="purple">end</span><br>
+            &emsp;&emsp;<span class="purple">else</span><br>
+            &emsp;&emsp;&emsp;flash[<span class="blue">:error</span>] = <span class="orange">'Wrong password.'</span><br>
+            &emsp;&emsp;&emsp;redirect_to new_team_path<br>
+            &emsp;&emsp;<span class="purple">end</span><br>
+            &emsp;<span class="purple">else</span><br>
+            &emsp;&emsp;flash[<span class="blue">:error</span>] = <span class="orange">'Team does not exist.'</span><br>
+            &emsp;&emsp;redirect_to new_team_path<br>
+            &emsp;<span class="purple">end</span><br>
+            <span class="purple">end</span><br>
         </div>
 
         <h3 id="opuszczanie">3.4 Opuszczanie drużyny</h3>
@@ -404,27 +405,27 @@
             Natomiast gotowa akcja w konstrolerze wygląda następująco:
         </p>
         <div class="console">
-                def leave_team<br>
-                # sprawdzenie czy należymy do drużyny, którą chcemy opuścić<br>
-                if current_user.team = @team<br>
-                  # jeśli tak, ustaw drużynę użytkownika jako null<br>
-                  current_user.team = nil<br>
-                  respond_to do |format|<br>
-                    # zapisanie zmian w użytkowniku<br>
-                    if current_user.save<br>
-                      flash[:success] = 'You successfully left the team.'<br>
-                      format.html { redirect_to root_url}<br>
-                      format.json { render :show, status: :created, location: @team }<br>
-                    else<br>
-                      format.html { render :new }<br>
-                      format.json { render json: @team.errors, status: :unprocessable_entity }<br>
-                    end<br>
-                  end<br>
-                else<br>
-                  flash[:error] = 'You cannot leave the team you\'re not a member of.'<br>
-                  redirect_to @team<br>
-                end<br>
-              end
+                <span class="purple">def</span> leave_team<br>
+                &emsp;<span class="comment"># sprawdzenie czy należymy do drużyny, którą chcemy opuścić</span><br>
+                &emsp;<span class="purple">if</span> current_user.team = @team<br>
+                &emsp;&emsp;<span class="comment"># jeśli tak, ustaw drużynę użytkownika jako null</span><br>
+                &emsp;&emsp;current_user.team = nil<br>
+                &emsp;&emsp;respond_to do |format|<br>
+                &emsp;&emsp;<span class="comment"># zapisanie zmian w użytkowniku</span><br>
+                &emsp;&emsp;<span class="purple">if</span> current_user.save<br>
+                &emsp;&emsp;&emsp;flash[<span class="blue">:success</span>] = <span class="orange">'You successfully left the team.'</span><br>
+                &emsp;&emsp;&emsp;format.html { redirect_to root_url}<br>
+                &emsp;&emsp;&emsp;format.json { render :show, status: :created, location: @team }<br>
+                &emsp;&emsp;<span class="purple">else</span><br>
+                &emsp;&emsp;&emsp;format.html { render :new }<br>
+                &emsp;&emsp;&emsp;format.json { render json: @team.errors, status: :unprocessable_entity }<br>
+                &emsp;&emsp;<span class="purple">end</span><br>
+                &emsp;&emsp;<span class="purple">end</span><br>
+                &emsp;<span class="purple">else</span><br>
+                &emsp;&emsp;flash[<span class="blue">:error</span>] = <span class="orange">'You cannot leave the team you\'re not a member of.'</span><br>
+                &emsp;&emsp;redirect_to @team<br>
+                &emsp;<span class="purple">end</span><br>
+                <span class="purple">end</span>
             </div>
         <h3 id="wyswietlanie">3.5 Wyświetlanie drużyny</h3>
         <p>
