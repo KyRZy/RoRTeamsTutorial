@@ -1,2 +1,175 @@
-<h1>Home#tutorial</h1>
-<p>Find me in app/views/home/tutorial.html.erb</p>
+<% provide(:title, "TUTORIAL") %>
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-offset-1 col-lg-10 col-lg-offset-1">
+        <h2>Przygotowanie projektu</h2>
+
+        <h3>GitHub</h3>
+        <p>Przed stworzeniem aplikacji w Ruby on Rails, stworzymy nowe repozytorium na GitHub.</p>
+        <div class="tutorial-image">
+            <%= image_tag  "1_create_rep.png" %>
+        </div>
+        <p>Następnie sklonujemy nowo stworzone repozytorium poleceniem:</p>
+        <div class="console">
+            git clone &lt;adres_repozytorium&gt; np.
+            <br> git clone https://github.com/KyRZy/RoRTeamsTutorial
+        </div>
+
+        <h3>Heroku</h3>
+        <p>
+            Heroku jest darmowym hostingiem, który pozwala nam na wczytanie naszej aplikacji z GitHuba.<br>
+            Wystarczy wejść na <a href="https://heroku.com">stronę Heroku</a>, zrobić nową aplikację i w zakładce Deploy 
+            zalogować się na swoje konto GitHub i wybrać repozytorium.
+        </p>
+        <div>
+            <%= image_tag  "6_heroku.png" %>
+        </div>
+        <p>
+            Po połączeniu z repozytorium możemy nacisnąć przycisk Enable Automatic Deploys, co zaktualizuję naszą stronę na domenie 
+            po tym jak pojawią się zmiany na repozytorium. Możemy też ręcznie wybierać moment aktualizacji strony wciskając przycisk Deploy Branch.
+        </p>
+
+        <p>
+            <strong>UWAGA!</strong> Gdy wprowadzimy zmiany w bazie danych naszej aplikacji, musimy poinformować o tym Heroku poprzez polecenie:
+        </p>
+        <div class="console">
+            heroku run rake db:migrate
+        </div>
+
+        <h3>Utworzenie aplikacji</h3>
+        <p>
+            Po sklonowaniu repozytorium, tworzymy nową aplikację. Domyślnie nowo utworzona aplikacja w Ruby on Rails korzysta z SQLite.
+            W przyszłości chcemy udostępnić aplikację na serwisie Heroku, dlatego po nazwie aplikacji ustawiamy parametr
+            <span class="code">database</span>.
+        </p>
+        <div class="console">
+            rails new RoRTeamsTutorial --database=postgresql
+        </div>
+        <p>
+            Konieczne jest utworzenie nowej bazy danych oraz użytkownika. Możemy to zrobić korzystając z programu pgAdmin.
+        </p>
+        <div class="tutorial-image">
+            <%= image_tag  "2_create_user.png" %>
+        </div>
+        <p>
+            Konieczne jest też ustawienie hasła użytkownika oraz włączenie logowania się na nowo utworzonego użytkownika.
+        </p>
+        <div class="tutorial-image">
+            <%= image_tag  "3_password_can_login.png" %>
+        </div>
+        <p>
+            Następnie należy utworzyć nową bazę danych i jako jej właściciela należy wybrać nowo utworzonego użytkownika.
+        </p>
+        <div class="tutorial-image">
+            <%= image_tag  "4_create_database.png" %>
+        </div>
+        <p>
+            Gdy baza danych jest gotowa, wystarczy skonfigutorać plik <span class="code">config/database.yml</span> w sekcji <span class="code">development</span>
+        </p>
+        <div class="console" >
+            <span class="blue">development:</span><br>
+            &emsp;<span class="blue"><<:</span> *default<br>
+            &emsp;<span class="blue">database:</span> <span class="orange">RoRTeamsTutorialDB</span><br>
+            &emsp;<span class="blue">username:</span> <span class="orange">RoRTeamsTutorialUser</span><br>
+            &emsp;<span class="blue">password:</span> <span class="orange">password</span><br>
+            &emsp;<span class="blue">host:</span> <span class="orange">localhost</span>
+        </div>
+        <p>Następnie należy włączyć aplikację poleceniem:</p>
+        <div class="console">
+            rails s
+        </div>
+        <p>Jeśli wszystkie powyższe kroki zostały wykonane poprawnie, powinniśmy zobaczyć:</p>
+        <div class="tutorial-image">
+            <%= image_tag  "5_rails_new.png" %>
+        </div>
+
+        <h2>Wstępna konfiguracja</h2>
+        <h3>Główny kontroler</h3>
+        <p>
+            Konieczne jest utworzenie kontrolera, gdzie jedną ze stron będzie strona główna, a drugą podstrona z samouczkiem.
+            Kontroler będzie miał nazwę <span class="code">home</span>
+        </p>
+        <div class="console">
+            rails g controller home index tutorial
+        </div>
+        <p>
+            Przechodząc do <span class="code">config/routes.rb</span> zobaczymy ścieżki prowadzące do różnych akcji w kontrolerach.
+            Wykorzystując słowo kluczowe <span class="code">root</span> ustawimy akcję <span class="code">index</span> z kontrolera <span class="code">home</span> 
+            jako stronę główną.
+        </p>
+        <div class="console">
+            <span class="green">Rails</span><span class="yellow">.application.routes.draw</span> <span class="purple">do</span><br>
+            &emsp;devise_for <span class="blue">:users</span><br>
+            &emsp;get <span class="orange">'home/index'</span><br>
+            &emsp;get <span class="orange">'home/tutorial'</span><br>
+            &emsp;<span class="yellow">root</span> <span class="orange">'home#index'</span><br>
+            <span class="purple">end</span>
+        </div>
+
+        <h3>Devise, Bootstrap i bcrypt</h3>
+        <p>
+            W pliku <span class"code">Gemfile</span> dodamy 3 gemy, które wykorzystamy w tym samouczku:
+        </p>
+        <div class="console">
+            <span class="blue">gem</span> <span class="orange">'devise'</span><br>
+            <span class="blue">gem</span> <span class="orange">'bootstrap-sass'</span><br>
+            <span class="blue">gem</span> <span class="orange">'bcrypt'</span>, <span class="blue">platforms: :ruby</span>
+        </div>
+        <p>
+            Po zmianach w pliku <span class"code">Gemfile</span> konieczne jest wykonanie polecenia:
+        </p>
+        <div class="console">
+            bundle install
+        </div>
+        <p>
+            Devise pozwoli nam na dodanie systemu logowania, Bootstrap przyśpieszy nam projektowanie front-end'u, natomiast 
+            bcrypt wykorzystamy do szyfrowania haseł podczas tworzenia drużyny oraz dołączania do istniejących drużyn.
+        </p>
+        <p>
+            Aby móc korzystać z Devise wykonamy polecenia:
+        </p>
+        <div class="console">
+            rails generate devise:install<br>
+            rails generate devise:views<br>
+            rails generate devise User team_id:integer
+        </div>
+        <p>
+            Pierwsze polecenie dokona konfiguracji Devise, drugie wygeneruje widoki do późniejszej edycji, a ostatnie wygeneruję tabelę <span class="code">Users</span> 
+            ze wszystkimi kolumnami wymaganymi dla Devise oraz kolumną team_id, którą wykorzystamy później.
+        </p>
+        <p>
+            Następnie wczytamy Bootstrap'a poprzez:
+        </p>
+        <ul>
+            <li>zmianę rozszeczenia pliku assets/stylesheets/application.css na application.scss</li>
+            <li>zaimportowanie Boostrapa wewnątrz application.scss poprzez <span class="code">@import "bootstrap-sprockets"</span> i <span class="code">@import "bootstrap"</span></li>
+            <li>dopisanie <span class="code">//= require bootstrap-sprockets</span> wewnątrz pliku assets/javascripts/application.js</li>
+        </ul>
+        <p>
+            Teraz możemy zrobić menu pozwalające na przechodzenie między podstronami oraz na logowanie się z użyciem Devise.<br>
+            Menu użyte na tej stronie: <a href="https://github.com/KyRZy/RoRTeamsTutorial/blob/master/app/views/layouts/_header.html.erb">https://github.com/KyRZy/RoRTeamsTutorial/blob/master/app/views/layouts/_header.html.erb</a>
+        </p>
+        <p>
+            Plik ma nazwę <span class="code">_header.html.erb</span>, ponieważ jest tzw. partial'em, co oznacza, 
+            że nigdy nie jest wywoływany sam tylko jest wywoływany wewnątrz innej podstrony.
+            Aby dodać <span class="code">_header.html.erb</span> do naszej strony wystarczy dopisać 
+            <span class="code">&lt;%= render "layouts/header" %&gt;</span> do pliku <span class="code">application.html.erb</span>
+        </p>
+        <p>
+            Wewnątrz menu, jako adresy odnośników zostały użyte np. root_path i new_user_session_path. 
+            Wszystkie ścieżki możemy znaleźć wpisując w przeglądarce niepoprawną ścieżkę.
+        </p>
+        <div class="tutorial-image">
+            <%= image_tag  "7_routes.png" %>
+        </div>
+
+        <h2>Zaimplementowanie drużyn</h2>
+        <h3>Tabela i model</h3>
+        <p>
+            Aby jednym poleceniem wygenerować wszystkie potrzebne widoki, model oraz kontroler z podstawowymi akcjami, wykorzystamy polecenie:
+        </p>
+        <div class="console">
+            rails g scaffold Team name:string encrypted_password:string salt:string leader_id:integer
+        </div>
+        
+
+
+    </div>

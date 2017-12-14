@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @team.name %>
+</p>
+
+<p>
+  <strong>Encrypted password:</strong>
+  <%= @team.encrypted_password %>
+</p>
+
+<p>
+  <strong>Salt:</strong>
+  <%= @team.salt %>
+</p>
+
+<p>
+  <strong>Leader:</strong>
+  <%= @team.leader_id %>
+</p>
+
+<%= link_to 'Edit', edit_team_path(@team) %> |
+<%= link_to 'Back', teams_path %>

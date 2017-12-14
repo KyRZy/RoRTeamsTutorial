@@ -43,3 +43,51 @@
 	padding: 30px;
 	margin: 40px 0px 40px;
 }
+
+.tutorial-image{
+	overflow:auto;
+    border:1px solid lightgrey;
+
+    img{
+        display:block;
+        margin:auto;
+    }
+}
+
+p{
+    font-size: 16px;
+    margin: 10px 0;
+}
+
+ul li{
+	font-size: 16px;
+}
+
+.console{
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    background-color: #2a2a2a;
+    color: white;
+    padding: 10px;
+	border-radius: 5px;
+	
+	span.green{
+		color: #18ffac;
+	}
+	span.yellow{
+		color: #ffff95;
+	}
+	span.purple{
+		color: #f16cf1;
+	}
+	span.blue{
+		color: #5a9bff;
+	}
+	span.orange{
+		color: #e48246;
+	}
+}
+
+span.code {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+	font-weight: bold;
+}
