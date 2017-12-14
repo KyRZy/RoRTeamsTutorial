@@ -145,21 +145,51 @@
         </ul>
         <p>
             Teraz możemy zrobić menu pozwalające na przechodzenie między podstronami oraz na logowanie się z użyciem Devise.<br>
-            Menu użyte na tej stronie: <a href="https://github.com/KyRZy/RoRTeamsTutorial/blob/master/app/views/layouts/_header.html.erb">https://github.com/KyRZy/RoRTeamsTutorial/blob/master/app/views/layouts/_header.html.erb</a>
+            Menu użyte na tej stronie: <a href="https://github.com/KyRZy/RoRTeamsTutorial/blob/master/app/views/layouts/_header.html.erb">https://github.com/KyRZy/RoRTeamsTutorial/blob/master/app/views/layouts/_header.html.erb</a><br>
+            Niektóre ścieżki jeszcze nie istnieją w tym etapie tutoriala, więc należy je usunąć lub zakomentować.
         </p>
         <p>
             Plik ma nazwę <span class="code">_header.html.erb</span>, ponieważ jest tzw. partial'em, co oznacza, 
             że nigdy nie jest wywoływany sam tylko jest wywoływany wewnątrz innej podstrony.
             Aby dodać <span class="code">_header.html.erb</span> do naszej strony wystarczy dopisać 
-            <span class="code">&lt;%= render "layouts/header" %&gt;</span> do pliku <span class="code">application.html.erb</span>
-        </p>
-        <p>
+            <span class="code">&lt;%= render "layouts/header" %&gt;</span> do pliku <span class="code">application.html.erb</span><br>
             Wewnątrz menu, jako adresy odnośników zostały użyte np. root_path i new_user_session_path. 
             Wszystkie ścieżki możemy znaleźć wpisując w przeglądarce niepoprawną ścieżkę.
         </p>
         <div class="tutorial-image">
             <%= image_tag  "7_routes.png" %>
         </div>
+        <p>
+            Sekcja &lt;body&gt; powinna wyglądać:
+        </p>
+        <div class="console">
+            &lt;%= <span class="blue">render</span> <span class="orange">"layouts/header"</span> %&gt;<br>
+            &lt;main class="container-fluid"&gt;<br>
+            &lt;% <span class="blue">flash</span>.each <span class="blue">do</span> |key, value| %&gt;<br>
+            &lt;div class="&lt;%= <span class="blue">flash_class</span>(key) %&gt;"&gt;<br>
+            &lt;%= <span class="blue">value</span> %&gt;<br>
+            &lt;/div&gt;<br>
+            &lt;% <span class="blue">end</span> %&gt;<br>
+            &lt;%= <span class="blue">yield</span> %&gt;<br>
+            &lt;/main&gt;
+        </div>   
+
+        <p>
+            Funkcja <span class="code">flash_class</span> pozwoli nam na wyświetlenie wszelkich komunikatów wykorzystujących flasha za pomocą alertów z Bootstrapa.<br>
+            Plik zxc powinien wyglądać tak:
+        </p>
+        <div class="console">
+        <span class="blue">module</span> ApplicationHelper<br>
+          &emsp;<span class="blue">def</span> flash_class(level)<br>
+          &emsp;&emsp;<span class="blue">case</span> level<br>
+          &emsp;&emsp;&emsp;<span class="blue">when</span> <span class="orange">'notice'</span> <span class="blue">then</span> <span class="orange">"alert alert-info"</span><br>
+          &emsp;&emsp;&emsp;<span class="blue">when</span> <span class="orange">'success'</span> <span class="blue">then</span> <span class="orange">"alert alert-success"</span><br>
+          &emsp;&emsp;&emsp;<span class="blue">when</span> <span class="orange">'error'</span> <span class="blue">then</span> <span class="orange">"alert alert-danger"</span><br>
+          &emsp;&emsp;&emsp;<span class="blue">when</span> <span class="orange">'alert'</span> <span class="blue">then</span> <span class="orange">"alert alert-warning"</span><br>
+          &emsp;&emsp;<span class="blue">end</span><br>
+          &emsp;<span class="blue">end</span><br>
+          <span class="blue">end</span>
+        </div>  <span class="orange">
 
         <h2>Zaimplementowanie drużyn</h2>
         <h3>Tabela i model</h3>
@@ -169,7 +199,39 @@
         <div class="console">
             rails g scaffold Team name:string encrypted_password:string salt:string leader_id:integer
         </div>
-        
+        <p>
+            Zanim zaktualizujemy bazę danych, ręcznie zmienimy plik migracji. Wewnątrz <span class="code">db/migrate/...create_teams.rb</span> 
+            edytujemy <span class="code">t.integer :leader_id</span> na <span class="code">t.integer :leader_id, :null => true</span>
+        </p>
+        <p>
+            Teraz możemy zaktualizować bazę danych poleceniem:
+        </p>
+        <div class="console">
+            rake db:migrate
+        </div>
+        <p>
+            Mając dwie tabelę, musimy ustawić ich relacje.<br>
+            Model <span class="code">user.rb</span> ustawiamy:
+        </p>
+        <div class="console">
+            belongs_to <span class="blue">:team </span><br>     
+            validates <span class="blue">:team</span>, <span class="blue">length:</span> { <span class="blue">minimum:</span> 1 }, <span class="blue">allow_nil: true</span>
+        </div>
+        <p>
+           <span class="code">team.rb</span> ustawiamy:
+        </p>
+        <div class="console">
+            has_one <span class="blue">:leader</span>, <span class="blue">:class_name</span> => <span class="orange">'User'</span><br>
+            has_many <span class="blue">:users</span><br>
+            validates <span class="blue">:name</span>, <span class="blue">presence: true</span>, <span class="blue">uniqueness:</span> {<span class="blue">case_sensitive: false</span>}
+        </div>
+        <p>
+            Od Rails 5 domyślnie jest ustawione zabezpieczenie, gdzie pole klasy, które jest referencją do innej klasy, nie może przyjąć wartości null.
+            W naszym wypadku chcemy przyjąć wartość null, gdy użytkownik nie należy do żadnej drużyny. Aby to naprawić wystarczy wejść do 
+            <span class="code">config/initializers/new_framework_defaults.rb</span> i ustawić wartość 
+            <span class="code">Rails.application.config.active_record.belongs_to_required_by_default</span> na false.<br>
+            <strong>UWAGA!</strong> Po zmianach w folderze initializers konieczne jest zrestartowanie serwera.
+        </p>
 
 
     </div>
